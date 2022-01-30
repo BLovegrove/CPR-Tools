@@ -119,7 +119,6 @@ This is an example of how to list things you need to use the software and how to
 ## Usage
 
 <h2>Jackhammer coin farm:</h2>
-<div align="center">
 <img src="images/ToyCarDigging.png" style='vertical-align:middle;border-radius:10px;' align="left">
 <p align="left">
 (Note: Before you do anything - make sure you click on your penguin, close your wardrobe if its open, and move it somewhere far out of the screen. 
@@ -137,7 +136,6 @@ I like to leave mine on overnight wit my monitors turned off - I get about 200k 
 <br/><br/>
 
 <h2>Pizzatron 3000 helper</h2>
-<div align="center">
 <img src="images/ToyCarPizza.png" style='vertical-align:middle;border-radius:10px;' align="left">
 <p align="left">
 Just start your script + pizzatron game, cover the pizza in sauce + cheese/sprinkles and then you can hit they keys 1/2/3/4 to 
