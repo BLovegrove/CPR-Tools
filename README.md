@@ -15,7 +15,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/BLovegrove/cpr-tools">
-    <img src="images/logo.png" alt="Logo" width="160" height="80">
+    <img src="images/logo.png" alt="Logo" width="180" height="80">
   </a>
 
 <h3 align="center">CP:Rewritten Tools</h3>
@@ -67,8 +67,8 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<img src="images/ToyCar.png" style="border-radius: 10px;"><br />
-
+<img src="images/ToyCar.png" style='vertical-align:middle;border-radius:10px;'>
+<div style='vertical-align:middle; display:inline;'>
 Recently got my little group of gaming buddies into club penguin for a nostalgia trip. Unfortunately, I love decorating my igloo and very much
 <i>do not like</i> spending a year building up my gold reserves enough to do it properly.
 <br/>when I finished the script that solved the gold issue (jackhammer-3001), I found it hard to keep up with certain minigames and the pizzatron-3001 
@@ -116,8 +116,8 @@ This is an example of how to list things you need to use the software and how to
 
 <h2>Jackhammer coin farm:</h2>
 <div align="center">
-<img src="images/ToyCarDigging.png" style="border-radius: 10px;" align="left">
-<p align="right">
+<img src="images/ToyCarDigging.png" style='vertical-align:middle;border-radius:10px;'>
+<div style='vertical-align:middle; display:inline;'>
 (Note: Before you do anything - make sure you click on your penguin, close your wardrobe if its open, and move it somewhere far out of the screen. 
 I like to put mine so the tab you move it with is over the chat bar. This is because the bot might click a player sometimes and you dont want it covering 
 its path)
@@ -128,19 +128,17 @@ about a penguins width from either side of it. Once you're standing in your new 
 Hit escape to end it.'
 <br/><br/>
 I like to leave mine on overnight wit my monitors turned off - I get about 200k coins every time! Just make sure you're tabbed in.
-</p>
 </div>
 
 <br/><br/>
 
 <h2>Pizzatron 3000 helper</h2>
 <div align="center">
-<img src="images/ToyCarPizza.png" style="border-radius: 10px;" align="left">
-<p align="right">
+<img src="images/ToyCarPizza.png" style='vertical-align:middle;border-radius:10px;'>
+<div style='vertical-align:middle; display:inline;'>
 Just start your script + pizzatron game, cover the pizza in sauce + cheese/sprinkles and then you can hit they keys 1/2/3/4 to 
 instantly grab the 1st/2nd/3rd/4th ingredient from the cheese/sprinkles and move it to where your cursor is. This makes it as easy as 
 following the pizza with your cursor and spamming the right key sequence. It doesnt work 100% of the time so just make sure it isnt dropping any.
-</p>
 </div>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
