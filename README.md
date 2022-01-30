@@ -127,8 +127,7 @@ its path)
 <br/><br/><br/>
 Simply go over to the Mine Cave (found in the Mineshaft on the map) and pick up a mining helmet from the box.<br/>
 Put on that helmet (and only that helmet) then move your penguin to a location in the dirt thats between 2 penguin-heights from the top of the dirt area, and  
-about a penguins width from either side of it. Once you're standing in your new location, hit 'Shift' + 'd' and the sequence will begin.<br/>
-Hit escape to end it.'
+about a penguins width from either side of it. Once you're standing in your new location, start the script and hit 'Shift' + 'd' to start the sequence. Hit 'Escape' to end it.
 <br/><br/>
 I like to leave mine on overnight wit my monitors turned off - I get about 200k coins every time! Just make sure you're tabbed in.
 </p>
@@ -140,7 +139,7 @@ I like to leave mine on overnight wit my monitors turned off - I get about 200k 
 <p align="left">
 Just start your script + pizzatron game, cover the pizza in sauce + cheese/sprinkles and then you can hit they keys 1/2/3/4 to 
 instantly grab the 1st/2nd/3rd/4th ingredient from the cheese/sprinkles and move it to where your cursor is. This makes it as easy as 
-following the pizza with your cursor and spamming the right key sequence. It doesnt work 100% of the time so just make sure it isnt dropping any.
+following the pizza with your cursor and spamming the right key sequence. It doesnt work 100% of the time so just make sure it isnt dropping any toppings.
 </p>
 <br/>
 
