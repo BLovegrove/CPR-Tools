@@ -125,7 +125,7 @@ This is an example of how to list things you need to use the software and how to
 (Note: Before you do anything - make sure you click on your penguin, close your wardrobe if its open, and move it somewhere far out of the screen. 
 I like to put mine so the tab you move it with is over the chat bar. This is because the bot might click a player sometimes and you dont want it covering 
 its path)
-<br/><br/>
+<br/><br/><br/>
 Simply go over to the Mine Cave (found in the Mineshaft on the map) and pick up a mining helmet from the box.<br/>
 Put on that helmet (and only that helmet) then move your penguin to a location in the dirt thats between 2 penguin-heights from the top of the dirt area, and  
 about a penguins width from either side of it. Once you're standing in your new location, hit 'Shift' + 'd' and the sequence will begin.<br/>
