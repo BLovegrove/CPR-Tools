@@ -67,7 +67,14 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-| <img src="images/ToyCar.png" style='vertical-align:middle;border-radius:10px;'> | Recently got my little group of gaming buddies into club penguin for a nostalgia trip. Unfortunately, I love decorating my igloo and very much <i>do not like</i> spending a year building up my gold reserves enough to do it properly.<br/>when I finished the script that solved the gold issue (jackhammer-3001), I found it hard to keep up with certain minigames and the pizzatron-3001 was born. |
+<img src="images/ToyCar.png" style='vertical-align:middle;border-radius:10px;' align="left">
+<p align="left">
+Recently got my little group of gaming buddies into club penguin for a nostalgia trip. 
+Unfortunately, I love decorating my igloo and very much <i>do not like</i> 
+spending a year building up my gold reserves enough to do it properly.
+<br/>when I finished the script that solved the gold issue (jackhammer-3001), 
+I found it hard to keep up with certain minigames and the pizzatron-3001 was born.
+</p>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
