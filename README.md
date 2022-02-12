@@ -128,7 +128,7 @@ Simply go over to the Mine Cave (found in the Mineshaft on the map) and pick up 
 Put on that helmet (and only that helmet) then move your penguin to a location in the dirt thats between 2 penguin-heights from the top of the dirt area, and  
 about a penguins width from either side of it. Once you're standing in your new location, start the script and hit 'Shift' + 'd' to start the sequence. Hit 'Escape' to end it.
 <br/><br/>
-I like to leave mine on overnight wit my monitors turned off - I get about 200k coins every time! Just make sure you're tabbed in.
+I like to leave mine on overnight with my monitors turned off - I get about 200k coins every time! Just make sure you're tabbed in.
 </p>
 
 <br/><br/>
