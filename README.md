@@ -15,7 +15,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/BLovegrove/cpr-tools">
-    <img src="images/logo.png" alt="Logo" width="180" height="80">
+    <img src="docs/images/logo.png" alt="Logo" width="180" height="80">
   </a>
 
 <h3 align="center">CP:Rewritten Tools</h3>
@@ -66,7 +66,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<img src="images/ToyCar.png" style='vertical-align:middle;border-radius:10px;' align="left">
+<img src="docs/images/ToyCar.png" style='vertical-align:middle;border-radius:10px;' align="left">
 <p align="left">
 Recently got my little group of gaming buddies into club penguin for a nostalgia trip. 
 Unfortunately, I love decorating my igloo and very much <i>do not like</i> 
@@ -118,7 +118,7 @@ This is an example of how to list things you need to use the software and how to
 ## Usage
 
 <h3>Jackhammer coin farm:</h3>
-<img src="images/ToyCarDigging.png" style='vertical-align:middle;border-radius:10px;' align="left">
+<img src="docs/images/ToyCarDigging.png" style='vertical-align:middle;border-radius:10px;' align="left">
 <p align="left">
 (Note: Before you do anything - make sure you click on your penguin, close your wardrobe if its open, and move it somewhere far out of the screen. 
 I like to put mine so the tab you move it with is over the chat bar. This is because the bot might click a player sometimes and you dont want it covering 
@@ -134,7 +134,7 @@ I like to leave mine on overnight with my monitors turned off - I get about 200k
 <br/><br/>
 
 <h3>Pizzatron 3000 helper</h3>
-<img src="images/ToyCarPizza.png" style='vertical-align:middle;border-radius:10px;' align="left">
+<img src="docs/images/ToyCarPizza.png" style='vertical-align:middle;border-radius:10px;' align="left">
 <p align="left">
 Just start your script + pizzatron game, cover the pizza in sauce + cheese/sprinkles and then you can hit they keys 1/2/3/4 to 
 instantly grab the 1st/2nd/3rd/4th ingredient from the cheese/sprinkles and move it to where your cursor is. This makes it as easy as 
@@ -149,8 +149,8 @@ following the pizza with your cursor and spamming the right key sequence. It doe
 <!-- ROADMAP -->
 ## Roadmap
 
-- [X] Simple afk coin gathering via jackhammer in the mine cave
-- [X] Simplify the Pizzatron-3000 ingredient gameplay to selecting a single key per ingredient
+- [X] ~~Simple afk coin gathering via jackhammer in the mine cave~~
+- [X] ~~Simplify the Pizzatron-3000 ingredient gameplay to selecting a single key per ingredient~~
 - [ ] Use image recognition and OCR to completely automate the Pizzatron-3000
 - [ ] Use image recognition to make the jackhammer coin farm faster and more reliable (detecting free spots etc.)
 - [ ] Automate more minigames!

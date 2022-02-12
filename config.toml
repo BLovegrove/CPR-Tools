@@ -1,0 +1,23 @@
+[colors]
+game_bg=[34, 164, 243]
+billboard=[193, 202, 215]
+base=[[119,69,0],[199,134,0]]
+sauce_pizza=["ff4d00","e74400"]
+sauce_spicy=["ca0000","b80302"]
+sauce_choc=["561900","561900"]
+sauce_sweet=["feb2d9","e7a1c5"]
+
+[toppings]
+cheese = 0
+seaweed = 1
+shrimp = 2
+squid = 3
+fish = 4
+sprinkles = 0
+liquorice = 1
+chocolate = 2
+chip = 2
+marshmellow = 3
+jelly = 4
+bean = 4
+sauces = ["spicy", "hot", "flamethrower", "pink"]
