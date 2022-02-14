@@ -1,5 +1,7 @@
 import re
 from time import sleep
+import time
+from types import NoneType
 import cv2
 import numpy as np
 from PIL import ImageGrab
@@ -10,96 +12,115 @@ from imutils import perspective
 
 from . import config
 from . import util
+from .preview import PizzaPreview
 
 cfg = config.load_config()
+preview = PizzaPreview()
 
 def main():
     
-    while True:
-        window, window_img = find_bounding_box(cfg['colors']['game_bg'], (0,0,1920,1080))
-        if (type(window) is np.ndarray):
-            break
-        else:
-            print("Waiting for Club Penguin: Rewritten window...")
-            sleep(0.5)
+    cv2.namedWindow('Output', cv2.WINDOW_NORMAL)
             
-    window_rect = (window[0,0], window[0,1], window[2,0], window[2,1])
-    
+    print("Waiting for pizza billboard...")
     while True:
-        board, board_img = find_bounding_box(cfg['colors']['billboard'], window_rect)
-        if (type(board) is np.ndarray):
+        image = util.screenshot()
+        board = get_boundary(cfg['colors']['billboard'], image)
+        if (type(board) == np.ndarray):
+            preview.update_billboard(board)
             break
+            
+    while True:
+        sauce_found = False
+        image = util.screenshot()
+        
+        sauce_main_bound = get_boundary(cfg['colors']['pizza_sauce'], image)
+        if (type(sauce_main_bound) == np.ndarray):
+            sauce_alt_bound = get_boundary(cfg['colors']['hot_sauce'], image)
+            sauce_found = True
+            
         else:
-            print("Waiting for pizza billboard...")
-            sleep(0.5)
+            sauce_main_bound = get_boundary(cfg['colors']['choc_sauce'], image)
+            if (type(sauce_main_bound) == np.ndarray):
+                sauce_alt_bound = get_boundary(cfg['colors']['pink_sauce'], image)
+                sauce_found = True
+            else:
+                print("WHERE IS THE lAmB S A U C E!?")
+        
+        if (sauce_found):
+            sauce_main_x, sauce_main_y = get_center(sauce_main_bound)
+            sauce_alt_x, sauce_alt_y = get_center(sauce_alt_bound)
+            
+            preview.update_sauce_bounds(sauce_main_bound, sauce_alt_bound)
+            preview.update_sauce_pos((sauce_main_x, sauce_main_y), (sauce_alt_x, sauce_alt_y))
+            
+            break
     
-    board_abs = board
     board_w = board[1,0] - board[0,0]
     board_h = board[2,1] - board[1,1]
     
-    for coord in board_abs:
-        coord[0] += window[0,0]
-        coord[1] += window[0,1]
-    
-    pizza_name_rect = (
-        board_abs[0,0], 
-        board_abs[0,1], 
-        board_abs[2,0] - (board_w * 0.29), 
-        board_abs[2,1] - (board_h * 0.76)
+    recipe_coords = (
+        board[0,0], 
+        board[0,1], 
+        board[2,0] - (board_w * 0.29), 
+        board[2,1] - (board_h * 0.76)
     )
     
-    cv2.namedWindow('Output', cv2.WINDOW_AUTOSIZE)
-    cv2.moveWindow('Output', 1920, 0)
-    last_pizza = ""
-    last_coord = [0,0]
+    time_to_ocr = 0
+    last_recipe = ""
+    
     while True:
+        start_time = time.process_time()
+        
         try:
-            pizza, pizza_img = read_pizza_name(pizza_name_rect)
+        
+            image = util.screenshot()
+            preview.update_image(image)
             
-            if (pizza):
-                cv2.imshow('Output', cv2.cvtColor(pizza_img, cv2.COLOR_BGR2RGB))
+            if (time_to_ocr < cfg['ocr']['ticks_between_reads']):
                 
-                if (pizza != last_pizza):
-                    print(f"Found pizza: {pizza}")
-                    last_pizza = pizza
+                # fetch recipe via OCR 
+                recipe = get_recipe(recipe_coords)
+                if (type(recipe) != str):
+                    continue
                 
+                elif (recipe != last_recipe):
+                    print(f"Found recipe: {recipe}")
+                    last_recipe = recipe
                 
-                pizza_x, pizza_y = get_pizza_coord()
-                if (last_coord != [pizza_x, pizza_y]):
-                    print(f"Pizza located: x: {pizza_x} | Y: {pizza_y}")
-                    last_coord = [pizza_x, pizza_y]
-                    
+                time_to_ocr += 1
             else:
-                print("Waiting for new pizza...")
+                time_to_ocr = 0
+                
+            # use boundary detection to track current x,y of pizzas center
+            pizza_bound = get_boundary(cfg['colors']['pizza_base'], image)
+            if (type(pizza_bound) == np.ndarray):
+                pizza_x, pizza_y = get_center(pizza_bound)
+                preview.update_pizza_bound(pizza_bound)
+                preview.update_pizza_pos((pizza_x, pizza_y))
             
-            if cv2.getWindowProperty('Output', cv2.WND_PROP_VISIBLE) > 0:
-                keyCode = cv2.waitKey(50) & 0xFF
-                if keyCode == 27:
-                    cv2.destroyAllWindows()
-                    break
-            else:
-                cv2.waitKey(1)
+            # toppings = util.get_toppings(recipe)
+            
+            cv2.imshow('Output', preview.draw())
+            
+            if (cv2.waitKey(1) & 0xFF) == ord('q'):
                 cv2.destroyAllWindows()
+                break
             
         except KeyboardInterrupt:
             break
+    
+        print(time.process_time() - start_time)
 
-def find_bounding_box(filter_colors: list, screenshot_area: tuple, debug: bool=False) -> np.ndarray | np.ndarray:
+def get_boundary(color_filter: list, image: np.ndarray) -> np.ndarray:
     
     # load the image, mask it, and convert to grayscale
-    image = np.array(ImageGrab.grab(bbox=screenshot_area))
-    
-    if (len(filter_colors) == 3):
-        filter_low = filter_high = np.array(filter_colors)
+    if (len(color_filter) == 3):
+        filter_low = filter_high = np.array(color_filter)
     else:
-        filter_low = np.array(filter_colors[0])
-        filter_high = np.array(filter_colors[1])
+        filter_low = np.array(color_filter[0])
+        filter_high = np.array(color_filter[1])
         
     gray = cv2.inRange(image, filter_low, filter_high)
-    
-    if (debug):
-        util.imshow_wait('Output: Original', image)
-        util.imshow_wait('Output: Mask', gray)
         
     # perform edge detection, then perform a dilation + erosion to
     # close gaps in between object edges
@@ -112,6 +133,7 @@ def find_bounding_box(filter_colors: list, screenshot_area: tuple, debug: bool=F
         cv2.CHAIN_APPROX_SIMPLE)[0]
 
     boxes = []
+    areas = []
 
     # loop over the contours individually
     for c in cnts:
@@ -129,13 +151,24 @@ def find_bounding_box(filter_colors: list, screenshot_area: tuple, debug: bool=F
         # order, then draw the outline of the rotated bounding
         # box
         boxes.append(perspective.order_points(box))
-        
+    
     if (len(boxes) > 0):
-        return boxes[-1], image
+        
+        for box in boxes:
+            
+            width = box[1,0] - box[0,0]
+            height = box[2,1] - box[1,1]
+            
+            area = float(width) * float(height)
+            areas.append(area)
+            
+        largest_area = max(areas)
+        
+        return boxes[areas.index(largest_area)]
     else:
-        return None, None
+        return None
 
-def read_pizza_name(name_box: tuple):
+def get_recipe(name_box: tuple):
     
     image = np.array(ImageGrab.grab(bbox=name_box))
     
@@ -144,25 +177,19 @@ def read_pizza_name(name_box: tuple):
     cleaned_result = ""
     
     for k in ocr_result.split("\n"):
-        cleaned_result += " ".join(re.findall(r"[a-zA-Z0-9]+", k))
+        cleaned_result += " ".join(re.findall(r"[a-zA-Z]+", k))
     
     if ('pizza' in cleaned_result):
-        return cleaned_result.strip('pizza'), image
+        return cleaned_result.replace("pizza", "")
     else:
-        return None, None
+        return None
 
-def get_pizza_coord():
+def get_center(boundary: np.ndarray) -> tuple[int, int]:
     
-    # snap image
-    coords, image = find_bounding_box(cfg['colors']['base'], (0,0,1920,1080))
-    
-    pizza_w = coords[1,0] - coords[0,0]
-    pizza_h = coords[2,1] - coords [1,1]
-    
-    x = (coords[0,0] + coords[1,0] + coords[2,0] + coords[3,0]) / 4
-    y = (coords[0,1] + coords[1,1] + coords[2,1] + coords[3,1]) / 4
+    x = (boundary[0,0] + boundary[1,0] + boundary[2,0] + boundary[3,0]) / 4
+    y = (boundary[0,1] + boundary[1,1] + boundary[2,1] + boundary[3,1]) / 4
             
-    return x, y
+    return int(x), int(y)
 
 if __name__ == '__main__':
     

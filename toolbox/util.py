@@ -1,29 +1,47 @@
 import numpy as np
+from PIL import ImageGrab
 import cv2
 
 from . import config
 
 cfg = config.load_config()
 
-def show_box_contour_data (window_name: str, image: np.ndarray, box: list):
+def screenshot():
+    
+    return np.array(ImageGrab.grab(bbox=(0,0,1920,1080)))
+
+def draw_mask(window_name: str, color_filter: list[int], screenshot_area: tuple):
+    
+    image = np.array(ImageGrab.grab(bbox=screenshot_area))
+    
+    if (len(color_filter) == 3):
+        filter_low = filter_high = np.array(color_filter)
+    else:
+        filter_low = np.array(color_filter[0])
+        filter_high = np.array(color_filter[1])
+    
+    mask = cv2.inRange(image, filter_low, filter_high)  
+    
+    imshow_wait(f"{window_name} (mask)", mask)
+
+def draw_boundary(image: np.ndarray, box: np.ndarray):
     
     # draw the contours on the image
     cv2.drawContours(image, [box.astype("int")], -1, (0, 255, 0), 5)
 
-    # loop over the original points
-    for (xA, yA) in list(box):
-        # draw circles corresponding to the current points and
-        cv2.circle(image, (int(xA), int(yA)), 9, (0,0,255), -1)
-        cv2.putText(image, "({},{})".format(xA, yA), (int(xA - 50), int(yA - 10) + 20),
-            cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255,0,0), 5)
-
     # show the output image, resize it as per your requirements    
-    imshow_wait(window_name, image)
-        
+    return image
+
+def draw_point(image: np.ndarray, coordinate: tuple):
+    
+    image = cv2.circle(image, center=coordinate, radius=9, color=(0,0,255), thickness=-1)
+    
+    return image
+ 
 def imshow_wait(window_name: str, image: np.ndarray):
     
     cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
-    image = cv2.resize(image, (1366,768))
+    # image = cv2.resize(image, (1366,768))
     cv2.imshow(window_name, cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
     
     while cv2.getWindowProperty(window_name, cv2.WND_PROP_VISIBLE) > 0:
@@ -35,34 +53,15 @@ def imshow_wait(window_name: str, image: np.ndarray):
     cv2.waitKey(1)
     cv2.destroyAllWindows()
 
-def topping_breakdown(pizza_name: str) -> list | bool:
+def get_toppings(recipe: str) -> list | bool:
     
-    alt_sauce = False
     toppings = []
-    
-    for item in cfg['toppings']['sauce']:
-        if item in pizza_name:
-            alt_sauce = True
     
     for topping in cfg['toppings']:
         if topping == "sauces":
             continue
         
-        if topping in pizza_name and topping not in toppings:
+        if topping in recipe and topping not in toppings:
             toppings.append(topping)
             
-    return toppings, alt_sauce
-
-
-# def add_topping(game_window_box: np.ndarray, toppings: list, alt_sauce: bool=False):
-    
-#     if (len(toppings) == 4):
-#         topping_qty = 1
-#     elif (len(toppings) == 2):
-#         topping_qty = 2
-#     elif (len(toppings) == 1):
-#         topping_qty = 5
-#     else:
-#         topping_qty = 0
-        
-    
+    return toppings
