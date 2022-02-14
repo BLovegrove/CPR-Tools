@@ -83,7 +83,11 @@ I found it hard to keep up with certain minigames and the pizzatron-3001 was bor
 
 ### Built With
 
-* [AutoHotKey](https://www.autohotkey.com/)
+* [Python 3.10](https://www.python.org/downloads/release/python-3100/)
+* [OpenCV](https://opencv.org/)
+* [Tesseract OCR](https://github.com/tesseract-ocr/tesseract)
+* [opencv-python](https://pypi.org/project/opencv-python/)
+* [pytesseract](https://pypi.org/project/pytesseract/)
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -93,22 +97,36 @@ I found it hard to keep up with certain minigames and the pizzatron-3001 was bor
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Setting this up for yourself is insanely easy.
+Setting this up for yourself is fairly easy if you're on Linux.
+If you're on Windows, you'll need to find out how to get Tesseract running and I can't offer any guarantees as to performance or even basic functionality as tesseract has no official Windows binaries for its latest version(s) as of writing this.<br/>
+Though if you've neevr tried linux, I'd highly recommend rying [Pop!_os](https://pop.system76.com/) by System76 - It's a fantastic operating syustem and one that I use exclusively
 
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
-* Latest AutoHotKey version
+* [Python 3.10](https://www.python.org/downloads/)
   ```sh
-  sudo apt install autohotkey-gtk # for GNOME, autohotkey-qt for KDE
+  sudo apt install python3.10 # Debian Linux
   ```
-  (or head to [AHK's website](https://www.autohotkey.com/) and grab the latest copy for your OS there)
+* [pipenv](https://pypi.org/project/pipenv/) for python 3.10
+  ```sh
+  python3.10 pip install pipenv
+  ```
+* Latest [OpenCV](https://opencv.org/) version
+  ```sh
+  sudo apt install python3-opencv # Debian Linux
+  ```
+* latest [Tesseract](https://tesseract-ocr.github.io/tessdoc/Downloads.html) version
+  ```sh
+  sudo apt install tesseract-ocr # Debian Linux
+  ```
 
 ### Installation
 
 1. Download / clone a copy of this repo
-2. Install AutoHotKey
-3. Run the script you need!
+2. Install prerequisits
+3. Run ```pipenv install``` inside cloned directory for dependencies
+4. Edit [display] category in the config.toml file to match your monitor
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -117,30 +135,23 @@ This is an example of how to list things you need to use the software and how to
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-<h3>Jackhammer coin farm:</h3>
-<img src="docs/images/ToyCarDigging.png" style='vertical-align:middle;border-radius:10px;' align="left">
-<p align="left">
-(Note: Before you do anything - make sure you click on your penguin, close your wardrobe if its open, and move it somewhere far out of the screen. 
-I like to put mine so the tab you move it with is over the chat bar. This is because the bot might click a player sometimes and you dont want it covering 
-its path)
-<br/><br/><br/>
-Simply go over to the Mine Cave (found in the Mineshaft on the map) and pick up a mining helmet from the box.<br/>
-Put on that helmet (and only that helmet) then move your penguin to a location in the dirt thats between 2 penguin-heights from the top of the dirt area, and  
-about a penguins width from either side of it. Once you're standing in your new location, start the script and hit 'Shift' + 'd' to start the sequence. Hit 'Escape' to end it.
-<br/><br/>
-I like to leave mine on overnight with my monitors turned off - I get about 200k coins every time! Just make sure you're tabbed in to your browser window when you start it.
-</p>
-
-<br/><br/>
-
-<h3>Pizzatron 3000 helper</h3>
-<img src="docs/images/ToyCarPizza.png" style='vertical-align:middle;border-radius:10px;' align="left">
+<h3>Pizzatron 3000 helper (AHK script)</h3>
 <p align="left">
 Just start your script + pizzatron game, cover the pizza in sauce + cheese/sprinkles and then you can hit they keys 1/2/3/4 to 
 instantly grab the 1st/2nd/3rd/4th ingredient from the cheese/sprinkles and move it to where your cursor is. This makes it as easy as 
-following the pizza with your cursor and spamming the right key sequence. It doesnt work 100% of the time so just make sure it isnt dropping any toppings.
+following the pizza with your cursor and spamming the right key sequence. It doesnt work 100% of the time so just make sure it isnt dropping any toppings.<br/><br/>
+(Please note: This is old code so I won't be providing install or setup instructions. It's fairly straight forward though - just head to Auto Hotkey's website and ahve a look.)
 </p>
 <br/>
+<h3>Pizzatron 3001 Automaton (W.I.P)</h3>
+<img src="docs/images/ToyCarPizza.png" style='vertical-align:middle;border-radius:10px;' align="left">
+<p align="left">
+Once you've run through your install process, jump into a terminal window inside the cloned git location (I'd recommend running VSCode as an editor which does this for you) and run the command 'pipenv run python -m toolbox' to start the bot.<br/><br/>
+The bot will wait until it finds the pizza ingredients / stats billboard before it starts running anything heavy. When it starts you'll get a window that pops up and may claim to be unresponsive, but will upodate when the minigame starts. just select whatever option is most similar to 'wait'ing and use this time while its 'unresponsive' to resize it and move it wherever is most convenient for you. 
+<br/><br/>
+Currently the bot is only capable of tracking objects and displaying a preview of what its tracking with labels / bounding boxes / tracking points. The next step I'm working on will allow the bot to add sauce + cheese/sprinkles to the pizza and any toppings required based on the name of the pizza you're being asked to make.
+</p>
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -149,10 +160,8 @@ following the pizza with your cursor and spamming the right key sequence. It doe
 <!-- ROADMAP -->
 ## Roadmap
 
-- [X] ~~Simple afk coin gathering via jackhammer in the mine cave~~
 - [X] ~~Simplify the Pizzatron-3000 ingredient gameplay to selecting a single key per ingredient~~
-- [ ] Use image recognition and OCR to completely automate the Pizzatron-3000
-- [ ] Use image recognition to make the jackhammer coin farm faster and more reliable (detecting free spots etc.)
+- [ ] Use computer vision and OCR to completely automate the Pizzatron-3000
 - [ ] Automate more minigames!
 
 See the [open issues](https://github.com/BLovegrove/cpr-tools/issues) for a full list of proposed features (and known issues).

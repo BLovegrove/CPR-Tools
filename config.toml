@@ -1,3 +1,9 @@
+[display]
+offset_x = 0
+offset_y = 0
+width = 1920
+height = 1080
+
 [colors]
 game_bg=[34, 164, 243]
 billboard=[193, 202, 215]

@@ -99,7 +99,7 @@ def draw_boundary(image: np.ndarray, box: np.ndarray):
     
 while True:
     start = time.process_time()
-    image = np.array(ImageGrab.grab(bbox=(0,0,1920,1080)))
+    image = np.array(ImageGrab.grab(bbox=(cfg['display']['offset_x'],cfg['display']['offset_y'],cfg['display']['width'],cfg['display']['height'])))
     
     # pizza_loc = get_boundary([[119,69,0], [199,134,0]], image)
     # if (type(pizza_loc) == np.ndarray):

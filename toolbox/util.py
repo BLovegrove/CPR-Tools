@@ -8,7 +8,7 @@ cfg = config.load_config()
 
 def screenshot():
     
-    return np.array(ImageGrab.grab(bbox=(0,0,1920,1080)))
+    return np.array(ImageGrab.grab(bbox=(cfg['display']['offset_x'],cfg['display']['offset_y'],cfg['display']['width'],cfg['display']['height'])))
 
 def draw_mask(window_name: str, color_filter: list[int], screenshot_area: tuple):
     
