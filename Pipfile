@@ -12,6 +12,7 @@ numpy = "*"
 imutils = "*"
 scipy = "*"
 mss = "*"
+pyautogui = "*"
 
 [dev-packages]
 

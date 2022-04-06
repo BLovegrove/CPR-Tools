@@ -5,28 +5,29 @@ width = 1920
 height = 1080
 
 [colors]
-game_bg=[34, 164, 243]
+game_window=[34, 164, 243]
 billboard=[193, 202, 215]
 pizza_base=[[119,69,0], [199,134,0]]
+# pizza_base=[[119,69,0], [216,152,18]]
 pizza_sauce=[255, 77, 0]
 hot_sauce=[255, 0, 0]
 choc_sauce=[255, 204, 0]
 pink_sauce=[246, 102, 188]
 
 [toppings]
-cheese = 0
 seaweed = 1
 shrimp = 2
 squid = 3
+dish = 3
 fish = 4
-sprinkles = 0
+supreme = [1,2,3,4]
 liquorice = 1
-chocolate = 2
 chip = 2
-marshmellow = 3
+marshmallow = 3
 jelly = 4
 bean = 4
+sugar = [1,2,3,4]
 sauces = ["spicy", "hot", "flamethrower", "pink"]
 
 [ocr]
-ticks_between_reads = 10
+seconds_before_read = 1

@@ -56,30 +56,48 @@ class PizzaPreview:
         self.update_overlay()
         return self.image_post
 
-    def update_image(self, image):
+    def get_image(self):
+        return self.image
+
+    def set_image(self, image):
         self.image = image
         self.image_post = image
         return
     
-    def update_billboard(self, billboard_bound):
+    def get_billboard(self):
+        return self.billboard_boundary
+    
+    def set_billboard(self, billboard_bound):
         self.billboard_boundary = billboard_bound
         return
     
-    def update_sauce_pos(self, sauce_main_pos, sauce_alt_pos):
+    def get_sauce_pos(self):
+        return [self.sauce_main_position, self.sauce_alt_position]
+    
+    def set_sauce_pos(self, sauce_main_pos, sauce_alt_pos):
         self.sauce_main_position = sauce_main_pos
         self.sauce_alt_position = sauce_alt_pos
         return
     
-    def update_sauce_bounds(self, sauce_main_bound, sauce_alt_bound):
+    def get_sauce_bounds(self):
+        return [self.sauce_main_boundary, self.sauce_alt_boundary]
+    
+    def set_sauce_bounds(self, sauce_main_bound, sauce_alt_bound):
         self.sauce_main_boundary = sauce_main_bound
         self.sauce_alt_boundary = sauce_alt_bound
         return
+    
+    def get_pizza_pos(self):
+        return self.pizza_position
         
-    def update_pizza_pos(self, pizza_pos):
+    def set_pizza_pos(self, pizza_pos):
         self.pizza_position = pizza_pos
         return
     
-    def update_pizza_bound(self, pizza_bound):
+    def get_pizza_bound(self):
+        return self.pizza_boundary
+    
+    def set_pizza_bound(self, pizza_bound):
         self.pizza_boundary = pizza_bound
         return
         

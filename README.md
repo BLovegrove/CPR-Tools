@@ -147,7 +147,7 @@ following the pizza with your cursor and spamming the right key sequence. It doe
 <img src="docs/images/ToyCarPizza.png" style='vertical-align:middle;border-radius:10px;' align="left">
 <p align="left">
 Once you've run through your install process, jump into a terminal window inside the cloned git location (I'd recommend running VSCode as an editor which does this for you) and run the command 'pipenv run python -m toolbox' to start the bot.<br/><br/>
-The bot will wait until it finds the pizza ingredients / stats billboard before it starts running anything heavy. When it starts you'll get a window that pops up and may claim to be unresponsive, but will upodate when the minigame starts. just select whatever option is most similar to 'wait'ing and use this time while its 'unresponsive' to resize it and move it wherever is most convenient for you. 
+The bot will wait until it finds the pizza ingredients / stats billboard before it starts running anything heavy. When it starts you'll get a p[op-up window that will update when the minigame starts. You can resize it and move it wherever is most convenient for you before the game starts. 
 <br/><br/>
 Currently the bot is only capable of tracking objects and displaying a preview of what its tracking with labels / bounding boxes / tracking points. The next step I'm working on will allow the bot to add sauce + cheese/sprinkles to the pizza and any toppings required based on the name of the pizza you're being asked to make.
 </p>
