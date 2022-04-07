@@ -20,13 +20,16 @@ def debug_rectangles(rectangles, image):
 
 def main():
     
+    # loading message with some basic stats about what config you're running
     print("Starting Pizzatron3001 bot with the following settings:")
     print(f"Resolution (WxH): {cfg['display']['width']} x {cfg['display']['height']} pixels")
     print(f"Offset (WxH): {cfg['display']['offset_x']} x {cfg['display']['offset_y']} pixels")
     print()
     
+    # init the preview window
     cv2.namedWindow('output', cv2.WINDOW_NORMAL)
     
+    # detects the boundaries of the game window
     print("Waiting for game window...")
     print("(Dont scroll your screen when this has finished)")
     while True:
@@ -41,6 +44,7 @@ def main():
             print('Window found.')
             break
     
+    # detects the boundaries of the pizza billboard for the OCR to use
     print("Waiting for pizza billboard...")
     while True:
         
@@ -54,6 +58,7 @@ def main():
             print('Billboard found.')
             break
     
+    # checks for one sweet/savoury sauce and searches for the other based on the result
     print("Determining sauce locations...")
     sauce_boundary = (
         game_window[0], 
@@ -100,7 +105,7 @@ def main():
             
             else:
                 print("WHERE IS THE lAmB S A U C E!?")
-                
+        
     print("Calculating topping locations...")
     # just a few pixels above bottom of sauce bottles is perfect
     toppings_x = []
