@@ -70,9 +70,6 @@ def get_recipe(image: np.ndarray):
     ocr_result = ocr_result.replace("\n", " ")
     cleaned_result = ""
     
-    # with open('toolbox/debug/ocr_raw.txt', 'w') as f:
-    #     f.write('' + ocr_result)
-    
     for k in ocr_result.split("\n"):
         cleaned_result += " ".join(re.findall(r"[a-zA-Z]+", k))
     
@@ -242,7 +239,6 @@ def get_toppings(recipe: str) -> list | bool:
 
 # def pizza_progress()
 
-# TODO: tweak sauce cutoff for less wasted time 
 def apply_sauce(pizza_preview: PizzaPreview, game_window_height: int, x_cutoff:int, sauce_alt: bool = False):
     
     conveyor_height = game_window_height * .35
@@ -278,7 +274,6 @@ def apply_sauce(pizza_preview: PizzaPreview, game_window_height: int, x_cutoff:i
     
     return
 
-# TODO: tweak delays and speeds to go faster
 def apply_topping(y_pos: int, x_pos: int, pizza_pos: tuple[int,int]):
     
     pgui.moveTo(x_pos, y_pos)

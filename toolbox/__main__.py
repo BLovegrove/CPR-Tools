@@ -139,7 +139,7 @@ def main():
                 else:
                     sauce_alt = False
                 
-                # super handy flag for debugging. turn it off to take manual control
+                # super handy flag for debugging. turn it off to take amnual control
                 if (AUTOMATIC):
                     game_window_height = game_window[2][1] - game_window[1][1]
                     util.apply_sauce(preview, game_window_height, toppings_pos_x[0], sauce_alt)
