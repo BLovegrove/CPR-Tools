@@ -4,6 +4,7 @@ from .lib import mouse
 from .lib import config
 from .lib import vision
 from .lib import display
+from .lib import bot
 
 cfg = config.load_config()
 
@@ -17,17 +18,9 @@ def debug_rectangles(rectangles, image):
         
     display.imshow_wait('debug', image)
     
-
 def main():
-    
-    # loading message with some basic stats about what config you're running
-    print("Starting Pizzatron3001 bot with the following settings:")
-    print(f"Resolution (WxH): {cfg['display']['width']} x {cfg['display']['height']} pixels")
-    print(f"Offset (WxH): {cfg['display']['offset_x']} x {cfg['display']['offset_y']} pixels")
-    print()
-    
     # init the preview window
-    cv2.namedWindow('output', cv2.WINDOW_NORMAL)
+    # cv2.namedWindow('output', cv2.WINDOW_NORMAL)
     
     # detects the boundaries of the game window
     print("Waiting for game window...")
@@ -67,44 +60,47 @@ def main():
         game_window[3] - (billboard[1] + billboard[3])
     )
     while True:
+        # TODO: allow this to be set via input at the beginning of game
+        # (or better yet - detect it automatically?)
         
-        # check for sweet sauce first because sprinkles contain enough red to
-        # trigger the savoury flag on sweet mode damnit.
-        image = vision.filter(vision.screenshot(), cfg['colors']['pink_sauce'])
-        sauce_alt = vision.get_rect(image, sauce_boundary)
+        image = (vision.screenshot())
         
-        if (sauce_alt):
+        if cfg['game']['sweet_mode']:
             print("Sauce type: Sweet.")
+            
+            image_bin = vision.filter(image, cfg['colors']['pink_sauce'])
+            sauce_alt = vision.get_rect(image_bin, sauce_boundary)
+            
             sauce_boundary_alt = (
                 sauce_boundary[0], 
                 sauce_boundary[1], 
                 sauce_alt[0] - game_window[0], 
                 sauce_boundary[3]
             )
-            image = vision.filter(vision.screenshot(), cfg['colors']['choc_sauce'])
-            rectangles = vision.get_rect(image, sauce_boundary_alt, mode="contour")
-            sauce_main = vision.largest_rect(rectangles)
-            break
-            
+            image_bin = vision.filter(image, cfg['colors']['choc_sauce'])
+            # rectangles = vision.get_rect(image_bin, sauce_boundary_alt, mode="contour")
+            sauce_main = vision.get_rect(image_bin, sauce_boundary_alt)
+            # sauce_main = vision.largest_rect(rectangles)
         else:
-            image = vision.filter(vision.screenshot(), cfg['colors']['hot_sauce'])
-            sauce_alt = vision.get_rect(image, sauce_boundary)
+            print("Sauce type: Savoury.")
             
-            if (sauce_alt):
-                print("Sauce type: Savoury.")
-                sauce_boundary_alt = (
-                    sauce_boundary[0], 
-                    sauce_boundary[1], 
-                    sauce_alt[0] - game_window[0], 
-                    sauce_boundary[3]
-                )
-                
-                image = vision.filter(vision.screenshot(), cfg['colors']['pizza_sauce'])
-                sauce_main = vision.get_rect(image, sauce_boundary_alt)
-                break
+            image_bin = vision.filter(image, cfg['colors']['hot_sauce'])
+            sauce_alt = vision.get_rect(image_bin, sauce_boundary)
             
-            else:
-                print("WHERE IS THE lAmB S A U C E!?")
+            sauce_boundary_alt = (
+                sauce_boundary[0], 
+                sauce_boundary[1], 
+                sauce_alt[0] - game_window[0], 
+                sauce_boundary[3]
+            )
+            
+            image_bin = vision.filter(image, cfg['colors']['pizza_sauce'])
+            sauce_main = vision.get_rect(image_bin, sauce_boundary_alt)
+            
+        if sauce_main and sauce_alt:
+            break
+        else:
+            print("WHERE IS THE lAmB S A U C E!?")
         
     print("Calculating topping locations...")
     # just a few pixels above bottom of sauce bottles is perfect
@@ -139,7 +135,7 @@ def main():
             image_bin = vision.filter(image, cfg['colors']['pizza_base'])
             pizza_base = vision.get_rect(image_bin, (0, sauce_main[1] + sauce_main[3], 0, 0))
             
-            if pizza_base:
+            if pizza_base[2] > 0:
                 # find the recipe using font color as a filter
                 image_bin = vision.filter(image, cfg['colors']['text'])
                 rectangles = vision.get_rect(image_bin, billboard, "contour")
@@ -154,6 +150,17 @@ def main():
                 waiting_for_pizza = False
                 break
         
+        for id in topping_ids:
+            
+            image = vision.screenshot()
+            image_bin = vision.filter(image, cfg['colors']['pizza_crust'])
+            pizza = vision.get_rect(image_bin, (0, sauce_main[1] + sauce_main[3], 0, 0))
+            
+            topping_pos = (toppings_x[id], toppings_y)
+            pizza_pos = (pizza[0] + (pizza[2] / 2), pizza[1] + (pizza[3] / 2))
+            
+            bot.apply_topping(topping_pos, pizza_pos)
+        
         # check for both pizza crust and base. base can be used to check
         # if more sauce is needed. no base = sauce finished
         image = vision.screenshot()
@@ -162,24 +169,31 @@ def main():
         image_bin = vision.filter(image, cfg['colors']['pizza_base'])
         pizza_base = vision.get_rect(image_bin, (0, sauce_main[1] + sauce_main[3], 0, 0))
         
-        # this should fire when the pizza clears the screen
-        if not pizza:
-            waiting_for_pizza = True
-            continue
+        pizza_pos = (pizza[0] + (pizza[2] / 2), pizza[1] + (pizza[3] / 2))
+        bot.apply_topping((toppings_x[0], toppings_y), pizza_pos)
         
+        while True:
+            image = vision.screenshot()
+            image_bin = vision.filter(image, cfg['colors']['pizza_crust'])
+            pizza = vision.get_rect(image_bin, (0, sauce_main[1] + sauce_main[3], 0, 0))
+            
+            if pizza[2] == 0:
+                waiting_for_pizza = True
+                break
+                
         # draw all the rectangles on the preview image
-        for item in [sauce_alt, sauce_main, billboard, game_window, pizza, pizza_base, recipe_rect]:
-            x,y,w,h = item[0], item[1], item[2], item[3]
-            cv2.rectangle(image,(x,y),(x+w,y+h),(0,255,0),3)
+        # for item in [sauce_alt, sauce_main, billboard, game_window, pizza, pizza_base, recipe_rect]:
+        #     x,y,w,h = item[0], item[1], item[2], item[3]
+        #     cv2.rectangle(image,(x,y),(x+w,y+h),(0,255,0),3)
             
-        for x in toppings_x:
-            cv2.circle(image, (x, toppings_y), 10, (255,0,0), -1)
+        # for x in toppings_x:
+        #     cv2.circle(image, (x, toppings_y), 10, (255,0,0), -1)
             
-        cv2.imshow('output', cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+        # cv2.imshow('output', cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
         
-        if (cv2.waitKey(1) & 0xFF) == ord('q'):
-            cv2.destroyAllWindows()
-            break
+        # if (cv2.waitKey(1) & 0xFF) == ord('q'):
+        #     cv2.destroyAllWindows()
+        #     break
 
 # test loop for fucking around with test code while still having access to everything
 def test():

@@ -31,3 +31,6 @@ jelly = 4
 bean = 4
 sugar = [1,2,3,4]
 sauce_keywords = ["spicy", "hot", "flamethrower", "pink"]
+
+[game]
+sweet_mode = false
