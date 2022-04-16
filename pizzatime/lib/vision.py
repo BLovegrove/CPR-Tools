@@ -4,9 +4,8 @@ from PIL import ImageGrab
 import pytesseract as pt
 import re
 
-from toolbox.util import imshow_wait
-
 from . import config
+from . import display
 
 cfg = config.load_config()
 
@@ -16,11 +15,12 @@ def screenshot(crop: tuple=None, scale: float=None):
     # offsets used for pickign which screen the game is on
     image = np.array(
         ImageGrab.grab(
+            # bbox works in top left x,y - bottom right x,y format
             bbox=(
                 cfg['display']['offset_x'],
                 cfg['display']['offset_y'],
-                cfg['display']['width'],
-                cfg['display']['height']
+                cfg['display']['width'] + cfg['display']['offset_x'],
+                cfg['display']['height'] + cfg['display']['offset_y']
             )
         )
     )
@@ -63,9 +63,12 @@ def filter(image: np.ndarray, color_filter: list):
     
     return image
 
-def get_rect(image: np.ndarray, crop: tuple=(0,0,0,0), mode: str="bounding"):
+def get_rect(image: np.ndarray, crop: tuple=(0,0,0,0), mode: str="bounding", min_area: int=100):
     
     x, y, w, h = crop
+    
+    offset_x = cfg['display']['offset_x']
+    offset_y = cfg['display']['offset_y']
     
     w = crop[2] if crop[2] > 0 else image.shape[1]
     h = crop[3] if crop[3] > 0 else image.shape[0]
@@ -95,7 +98,7 @@ def get_rect(image: np.ndarray, crop: tuple=(0,0,0,0), mode: str="bounding"):
                 rectangles = []
                 
                 for contour in contours:
-                    if cv2.contourArea(contour) > 100:
+                    if cv2.contourArea(contour) > min_area:
                         rect = cv2.boundingRect(contour)        
                         rect = (rect[0] + x, rect[1] + y, rect[2], rect[3])
                         
@@ -150,7 +153,6 @@ def get_recipe(recipe_rect: tuple):
         return None
     
 def get_toppings(recipe: str) -> list:
-    
     toppings = []
     
     for topping in cfg['topping_ids']:

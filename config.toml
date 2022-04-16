@@ -1,8 +1,8 @@
 [display]
-offset_x = 0
+offset_x = 1920
 offset_y = 0
-width = 1920
-height = 1080
+width = 1680
+height = 1050
 
 # dark-to-light order
 [colors]
@@ -30,7 +30,7 @@ marshmallow = 3
 jelly = 4
 bean = 4
 sugar = [1,2,3,4]
-sauce_keywords = ["spicy", "hot", "flamethrower", "pink"]
+sauce_keywords = ["spicy", "hot", "flamethrower", "pink", "sizzle"]
 
 [game]
 sweet_mode = false

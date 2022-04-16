@@ -1,9 +1,14 @@
 import cv2
 import numpy as np
 
-def imshow_wait(window_name: str, image: np.ndarray):
+def imshow_wait(window_name: str, image: np.ndarray, crop: tuple=None):
     
     cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
+
+    if crop:
+        x, y, w, h = crop
+            
+        image = image[y:y+h, x:x+w]
     
     try:
         cv2.imshow(window_name, cv2.cvtColor(image, cv2.COLOR_BGR2RGB))

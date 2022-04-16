@@ -8,6 +8,9 @@ from .lib import bot
 
 cfg = config.load_config()
 
+offset_x = cfg['display']['offset_x']
+offset_y = cfg['display']['offset_y']
+
 # TODO: track pizza base inside color seperately to determine when to start sauce and when to end it
 
 def debug_rectangles(rectangles, image):
@@ -29,12 +32,12 @@ def main():
         
         image = vision.screenshot()
         image_bin = vision.filter(image, cfg['colors']['game_window'])
-        rectangles = vision.get_rect(image_bin, mode="contour")
+        rectangles = vision.get_rect(image_bin, mode="contour", min_area=6500)
         
         game_window = vision.smallest_rect(rectangles)
         
         if (game_window):
-            print('Window found.')
+            print(f"Window found at: {game_window}")
             break
     
     # detects the boundaries of the pizza billboard for the OCR to use
@@ -48,7 +51,7 @@ def main():
         billboard = vision.largest_rect(rectangles)
         
         if (billboard):
-            print('Billboard found.')
+            print(f"Billboard found at: {billboard}")
             break
     
     # checks for one sweet/savoury sauce and searches for the other based on the result
@@ -60,11 +63,11 @@ def main():
         game_window[3] - (billboard[1] + billboard[3])
     )
     while True:
+        
+        image = vision.screenshot()
+        
         # TODO: allow this to be set via input at the beginning of game
         # (or better yet - detect it automatically?)
-        
-        image = (vision.screenshot())
-        
         if cfg['game']['sweet_mode']:
             print("Sauce type: Sweet.")
             
@@ -77,6 +80,7 @@ def main():
                 sauce_alt[0] - game_window[0], 
                 sauce_boundary[3]
             )
+            
             image_bin = vision.filter(image, cfg['colors']['choc_sauce'])
             # rectangles = vision.get_rect(image_bin, sauce_boundary_alt, mode="contour")
             sauce_main = vision.get_rect(image_bin, sauce_boundary_alt)
@@ -125,6 +129,7 @@ def main():
     toppings_x.insert(0, int(x))
         
     waiting_for_pizza = True
+    print(f"Toppings at: X={toppings_x[0]},{toppings_x[1]},{toppings_x[2]},{toppings_x[2]} Y={toppings_y}")
     
     while True:
         
@@ -136,6 +141,7 @@ def main():
             pizza_base = vision.get_rect(image_bin, (0, sauce_main[1] + sauce_main[3], 0, 0))
             
             if pizza_base[2] > 0:
+                # TODO: Find out why this freaks out around 25 pizzas
                 # find the recipe using font color as a filter
                 image_bin = vision.filter(image, cfg['colors']['text'])
                 rectangles = vision.get_rect(image_bin, billboard, "contour")
@@ -144,6 +150,7 @@ def main():
                 # perform OCR on the recipe region
                 recipe = vision.get_recipe(recipe_rect)
                 topping_ids = vision.get_toppings(recipe)
+                print(f"pizza type: {recipe}")
                 print(f"topping IDs: {topping_ids}")
                 
                 # exit the loop and disable the 'waiting' flag
@@ -153,12 +160,11 @@ def main():
         for id in topping_ids:
             
             image = vision.screenshot()
-            image_bin = vision.filter(image, cfg['colors']['pizza_crust'])
+            image_bin = vision.filter(image, cfg['colors']['pizza_base'])
             pizza = vision.get_rect(image_bin, (0, sauce_main[1] + sauce_main[3], 0, 0))
             
+            pizza_pos = (pizza[0] + pizza[2], pizza[1] + (pizza[3] / 2))
             topping_pos = (toppings_x[id], toppings_y)
-            pizza_pos = (pizza[0] + (pizza[2] / 2), pizza[1] + (pizza[3] / 2))
-            
             bot.apply_topping(topping_pos, pizza_pos)
         
         # check for both pizza crust and base. base can be used to check
